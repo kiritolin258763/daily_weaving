@@ -18,8 +18,7 @@
     const SHEET_URL = "https://script.google.com/macros/s/AKfycbyPwtz3iQnuW-AgevyncjI8Tpzn-py_tvk-K4l-ctHx9KyRge4r0ezTO6mHbG3brUbPfA/exec";
     const display = document.getElementById('display');
     let lastTxn = "";
-    let timeoutID = null; // 🌟 新增：用於儲存當前計時器 ID
-
+    let timeoutID = null; 
     async function fetchLatest() {
       try {
         const res = await fetch(SHEET_URL);
@@ -35,12 +34,10 @@
     }
 
     function showTransaction(data) {
-        // 🌟 關鍵修正 1：當顯示新交易時，清除上一個計時器
         if (timeoutID) {
             clearTimeout(timeoutID);
             timeoutID = null;
         }
-
         const total = data.total;
         const payment = data.payment;
         const change = data.change;
@@ -48,34 +45,27 @@
 
         if (data.status === 'No Data') {
              content = `<p class="text-3xl">等待中...</p>`;
-             // 不需要啟動 timeoutID，因為我們希望它保持顯示
         } else if (payment === 'Cash' && change > 0) {
-            // 情況一：需找零的現金交易
             content = `
               <p class="text-3xl font-bold mb-4">交易總額：<span class="text-green-400">${total}</span> 元</p>
               <p class="text-4xl font-bold mb-4">💰 應找零金額</p>
               <p class="text-7xl font-extrabold text-yellow-400">${change}</p>
               <p class="text-2xl mt-4">元</p>
             `;
-            // 🌟 關鍵修正 2：重新啟動計時器並儲存 ID
             timeoutID = setTimeout(showCard, 20000); 
         } else if (payment === 'Cash' && change === 0) {
-            // 情況二：不需找零的現金交易
             content = `
               <p class="text-4xl font-bold mb-4">交易總額：<span class="text-green-400">${total}</span> 元</p>
               <p class="text-7xl font-extrabold text-white">謝謝！</p>
               <p class="text-2xl mt-4">不需找零</p>
             `;
-            // 🌟 關鍵修正 2：重新啟動計時器並儲存 ID
             timeoutID = setTimeout(showCard, 20000); 
         } else {
-            // 情況三：非現金交易 (LINE Pay)
             content = `
               <p class="text-4xl font-bold mb-4">交易總額 (${payment})</p>
               <p class="text-7xl font-extrabold text-blue-400">${total}</p>
               <p class="text-3xl mt-8">請掃描付款碼</p>
             `;
-            // 🌟 關鍵修正 2：重新啟動計時器並儲存 ID
             timeoutID = setTimeout(showCard, 20000); 
         }
         
@@ -88,11 +78,7 @@
       `;
       timeoutID = null;
     }
-
-    // 初始化顯示一個靜態歡迎訊息
     showCard(); 
-
-    // 每2秒檢查一次是否有新交易
     setInterval(fetchLatest, 2000);
   </script>
 </body>
