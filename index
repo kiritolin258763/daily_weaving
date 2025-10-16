@@ -58,7 +58,7 @@
               <p class="text-2xl mt-4">元</p>
             `;
             // 🌟 關鍵修正 2：重新啟動計時器並儲存 ID
-            timeoutID = setTimeout(showCard, 20000); 
+            timeoutID = setTimeout(showCard, 6000); 
         } else if (payment === 'Cash' && change === 0) {
             // 情況二：不需找零的現金交易
             content = `
@@ -67,7 +67,7 @@
               <p class="text-2xl mt-4">不需找零</p>
             `;
             // 🌟 關鍵修正 2：重新啟動計時器並儲存 ID
-            timeoutID = setTimeout(showCard, 20000); 
+            timeoutID = setTimeout(showCard, 6000); 
         } else {
             // 情況三：非現金交易 (LINE Pay)
             content = `
@@ -76,7 +76,7 @@
               <p class="text-3xl mt-8">請掃描付款碼</p>
             `;
             // 🌟 關鍵修正 2：重新啟動計時器並儲存 ID
-            timeoutID = setTimeout(showCard, 20000); 
+            timeoutID = setTimeout(showCard, 6000); 
         }
         
         display.innerHTML = content;
